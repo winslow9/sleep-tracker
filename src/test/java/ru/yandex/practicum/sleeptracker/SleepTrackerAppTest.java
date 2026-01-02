@@ -128,6 +128,7 @@ class SleepTrackerAppTest {
         OptionalDouble result = FindAvgByMinutes.findAvgDurationSession(sessions);
         assertEquals(480, result.getAsDouble(), "Среднее время должно быть 480 минут");
     }
+
     @Test
     void findAvgByMinutes_ShouldReturnEmptyPtional_WhenSessionsListIsEmpty() {
         List<SleepingSession> emptySessions = Collections.emptyList();
@@ -163,10 +164,11 @@ class SleepTrackerAppTest {
         Integer result = BadSleepSessionsCounter.badSleepSessionsCounter(sessions);
         assertEquals(2, result, "Ответ должен быть 2");
     }
+
     @Test
     void badSleepSessionsCounter_ShouldReturnEmptyPtional_WhenSessionsListIsEmpty() {
         List<SleepingSession> emptySessions = Collections.emptyList();
         Integer result = BadSleepSessionsCounter.badSleepSessionsCounter(emptySessions);
-        assertFalse(result!=0, "Результат должен быть пустым для пустого списка");
+        assertFalse(result != 0, "Результат должен быть пустым для пустого списка");
     }
 }
