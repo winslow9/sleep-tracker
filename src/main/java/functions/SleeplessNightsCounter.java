@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class SleeplessNightsCounter implements Function<List<SleepingSession>, Integer> {
 
     public static Integer countBadSleepSessions(List<SleepingSession> sessions) {
-        return countMidnightsBetween(sessions)-getNightsWithSleepCount(sessions);
+        return countMidnightsBetween(sessions) - getNightsWithSleepCount(sessions);
     }
 
     //Вернуть общее количество ночей в логе
@@ -33,7 +33,6 @@ public class SleeplessNightsCounter implements Function<List<SleepingSession>, I
                 })
                 .orElse(0);
     }
-
 
 
     //Возвращает число ночей, когда был ночной сон

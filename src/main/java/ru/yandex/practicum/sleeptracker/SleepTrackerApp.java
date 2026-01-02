@@ -31,7 +31,7 @@ public class SleepTrackerApp {
             while ((line = reader.readLine()) != null) {
                 logEntries.add(line);
             }
-    } catch (IOException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
@@ -45,24 +45,24 @@ public class SleepTrackerApp {
 
         //Поиск наименьшей сессии в минутах
         OptionalLong minSession = FindMinSessionByMinutes.findMinSessionByMinutes(sessions);
-        System.out.println("минимальная продолжительность сессии: "+minSession.getAsLong());
+        System.out.println("минимальная продолжительность сессии: " + minSession.getAsLong());
 
         //Поиск наибольшей сессии в минутах
         //Прикинул другую вариацию вызова, отличную от функции findMinSessionByMinutes
         Optional<Duration> maxSession = FindMaxSessionByMinutes.findMaxSessionByMinutes(sessions);
         long maxMinutes = maxSession.get().toMinutes();
-        System.out.println("максимальная продолжительность сессии: "+maxMinutes);
+        System.out.println("максимальная продолжительность сессии: " + maxMinutes);
 
         //Попробовал вывод сразу в println
-        System.out.println("средняя продолжительность сессии: "+Math.round(FindAvgByMinutes.findAvgDurationSession(sessions).getAsDouble()));
+        System.out.println("средняя продолжительность сессии: " + Math.round(FindAvgByMinutes.findAvgDurationSession(sessions).getAsDouble()));
 
         //Количество плохих сессий
-        System.out.println("количество сессий с плохим качество сна: "+BadSleepSessionsCounter.badSleepSessionsCounter(sessions));
+        System.out.println("количество сессий с плохим качество сна: " + BadSleepSessionsCounter.badSleepSessionsCounter(sessions));
 
         //Колличество бессонных ночей
-        System.out.println("колличество бессонных ночей: "+SleeplessNightsCounter.countBadSleepSessions(sessions));
+        System.out.println("колличество бессонных ночей: " + SleeplessNightsCounter.countBadSleepSessions(sessions));
 
         //Птичий вопрос
-        System.out.println("В мире спящих птиц вы "+BirdClassificator.birdDetection(sessions));
+        System.out.println("В мире спящих птиц вы " + BirdClassificator.birdDetection(sessions));
     }
-    }
+}

@@ -11,9 +11,9 @@ import java.util.stream.Stream;
 
 public class BadSleepSessionsCounter implements Function<List<SleepingSession>, Duration> {
     public static Integer badSleepSessionsCounter(List<SleepingSession> sessions) {
-         Stream<SleepingSession> counter = sessions.stream()
+        Stream<SleepingSession> counter = sessions.stream()
                 .filter(session -> session.getSleepQuality().equals(SleepQuality.BAD));
-         return counter.toList().size();
+        return counter.toList().size();
 
     }
 
