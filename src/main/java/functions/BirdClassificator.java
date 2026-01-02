@@ -14,16 +14,16 @@ public class BirdClassificator implements Function<List<SleepingSession>, String
         int totalSessions = SleeplessNightsCounter.countMidnightsBetween(sessions);
         int pigeonCount = totalSessions - larkCount - owlCount;
 
-        /*System.out.println("Сова: "+owlCount);
+        /*System.out.println("СОВА: "+owlCount);
         System.out.println("Жаваронок: "+larkCount);
         System.out.println("Голубь "+pigeonCount);*/
 
         if (owlCount == 0 && larkCount == 0) {
             return BirdsType.ГОЛУБЬ; // Ни сова, ни жаворонок
         } else if ((owlCount > larkCount) && (owlCount > pigeonCount)) {
-            return BirdsType.Сова;
+            return BirdsType.СОВА;
         } else if ((larkCount > owlCount) && (larkCount > pigeonCount)) {
-            return BirdsType.Жаворонок;
+            return BirdsType.ЖАВОРОНОК;
         } else {
             return BirdsType.ГОЛУБЬ; // Равное количество
         }

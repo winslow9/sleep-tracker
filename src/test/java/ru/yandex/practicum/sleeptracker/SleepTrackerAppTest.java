@@ -5,8 +5,7 @@ import functions.FindAvgByMinutes;
 import functions.FindMaxSessionByMinutes;
 import functions.FindMinSessionByMinutes;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.sleeptracker.SleepingSession;
-import ru.yandex.practicum.sleeptracker.SleepQuality;
+
 
 import java.time.Duration;
 import java.time.LocalDateTime;
