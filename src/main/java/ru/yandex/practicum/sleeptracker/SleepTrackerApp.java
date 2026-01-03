@@ -2,15 +2,9 @@ package ru.yandex.practicum.sleeptracker;
 
 import functions.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalLong;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SleepTrackerApp {
@@ -18,27 +12,26 @@ public class SleepTrackerApp {
     public static void main(String[] args) {
         //Читаем файл с сессиями сна
         List<String> logEntries = new ArrayList<>();
-        String filePath = "sleep_log.txt";
+        String filePath;
 
-        try (InputStream inputStream = SleepTrackerApp.class.getClassLoader().getResourceAsStream(filePath);
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-
-            if (inputStream == null) {
-                throw new IOException("Файл логами сна не найден: " + filePath);
-            }
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                logEntries.add(line);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        if (args.length == 0) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("Введите путь к файлу с логом сна: ");
+            filePath = scanner.nextLine();
+            scanner.close();
+        } else {
+            filePath = args[0];
         }
 
-        //Конверт сессий из строк файла в лист объектов Sleepeng Session
-        List<SleepingSession> sessions = logEntries.stream()
-                .map(logEntrie -> SleepingSession.fromString(logEntrie))
-                .collect(Collectors.toList());
+        List<SleepingSession> sessions;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            sessions = reader.lines()
+                    .map(SleepingSession::fromString)  // Теперь возвращает Optional
+                    .map(Optional::get)                // Берем значение из Optional
+                    .collect(Collectors.toList());
+        } catch (IOException e) {
+            return;
+        }
 
         //Подсчет сессий через функцию SessionCounter
         Integer sessionsCounter = SessionsCounter.countSession(sessions);
@@ -65,4 +58,5 @@ public class SleepTrackerApp {
         //Птичий вопрос
         System.out.println("В мире спящих птиц вы " + BirdClassificator.birdDetection(sessions));
     }
+
 }

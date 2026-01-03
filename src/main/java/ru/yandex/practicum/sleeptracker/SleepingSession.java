@@ -3,6 +3,7 @@ package ru.yandex.practicum.sleeptracker;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 public class SleepingSession {
     private LocalDateTime sleepStart;
@@ -19,13 +20,14 @@ public class SleepingSession {
         setSleepQuality(sleepQuality);
     }
 
-    // Метод для создания объекта из строки
-    public static SleepingSession fromString(String logEntry) {
+    // Метод для создания объекта из строки (возвращает Optional)
+    public static Optional<SleepingSession> fromString(String logEntry) {
         try {
             String[] parts = logEntry.split(";");
 
             if (parts.length != 3) {
-                throw new IllegalArgumentException("Неверный формат строки. Ожидается: дата_начала;дата_окончания;качество");
+                System.err.println("Неверный формат строки. Ожидается: дата_начала;дата_окончания;качество");
+                return Optional.empty();
             }
 
             // Парсим даты
@@ -37,14 +39,16 @@ public class SleepingSession {
             try {
                 quality = SleepQuality.valueOf(parts[2].trim());
             } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Неверное значение качества сна: " + parts[2] +
+                System.err.println("Неверное значение качества сна: " + parts[2] +
                         ". Допустимые значения: " + String.join(", ", getSleepQualityValues()));
+                return Optional.empty();
             }
 
-            return new SleepingSession(start, finish, quality);
+            return Optional.of(new SleepingSession(start, finish, quality));
 
         } catch (Exception e) {
-            throw new IllegalArgumentException("Ошибка при парсинге строки: " + logEntry + " - " + e.getMessage(), e);
+            System.err.println("Ошибка при парсинге строки: " + logEntry + " - " + e.getMessage());
+            return Optional.empty();
         }
     }
 
@@ -65,7 +69,6 @@ public class SleepingSession {
         }
         return result;
     }
-
 
     // Геттеры и сеттеры
     public LocalDateTime getSleepStart() {
@@ -97,7 +100,6 @@ public class SleepingSession {
     public SleepQuality getSleepQuality() {
         return sleepQuality;
     }
-
 
     // Вернуть длительность сна в минутах
     public long getDurationInMinutes() {
