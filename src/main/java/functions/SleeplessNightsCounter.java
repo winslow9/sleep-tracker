@@ -1,5 +1,6 @@
 package functions;
 
+import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.SleepingSession;
 
 import java.time.LocalDate;
@@ -11,14 +12,19 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class SleeplessNightsCounter implements Function<List<SleepingSession>, Integer> {
+public class SleeplessNightsCounter implements Function<List<SleepingSession>, SleepAnalysisResult> {
+    private static final String DESCRIPTION = "Количество бессонных ночей";
 
     public static Integer countBadSleepSessions(List<SleepingSession> sessions) {
         return countMidnightsBetween(sessions) - getNightsWithSleepCount(sessions);
     }
 
-    //Вернуть общее количество ночей в логе
+    // Вернуть общее количество ночей в логе
     public static Integer countMidnightsBetween(List<SleepingSession> sessions) {
+        if (sessions.isEmpty()) {
+            return 0;
+        }
+
         return sessions.stream()
                 .findFirst()
                 .map(firstSession -> {
@@ -34,8 +40,7 @@ public class SleeplessNightsCounter implements Function<List<SleepingSession>, I
                 .orElse(0);
     }
 
-
-    //Возвращает число ночей, когда был ночной сон
+    // Возвращает число ночей, когда был ночной сон
     public static Integer getNightsWithSleepCount(List<SleepingSession> sessions) {
         Set<LocalDate> nightsWithSleep = sessions.stream()
                 .filter(session -> {
@@ -52,8 +57,6 @@ public class SleeplessNightsCounter implements Function<List<SleepingSession>, I
                     LocalTime midnight = LocalTime.MIDNIGHT;
                     LocalTime sixAm = LocalTime.of(6, 0);
 
-                    // Сессия пересекает ночной период если:
-                    // (начало < 06:00 И конец > 00:00)
                     return startTime.isBefore(sixAm) && finishTime.isAfter(midnight);
                 })
                 .map(session -> session.getSleepStart().toLocalDate())
@@ -62,9 +65,9 @@ public class SleeplessNightsCounter implements Function<List<SleepingSession>, I
         return nightsWithSleep.size();
     }
 
-
     @Override
-    public Integer apply(List<SleepingSession> sleepingSessions) {
-        return countBadSleepSessions(sleepingSessions);
+    public SleepAnalysisResult apply(List<SleepingSession> sessions) {
+        int sleeplessNights = countBadSleepSessions(sessions);
+        return new SleepAnalysisResult(DESCRIPTION, sleeplessNights);
     }
 }

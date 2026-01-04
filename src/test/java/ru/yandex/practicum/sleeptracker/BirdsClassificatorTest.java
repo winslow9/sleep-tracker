@@ -3,12 +3,16 @@ package ru.yandex.practicum.sleeptracker;
 import functions.BirdClassificator;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class BirdsClassificatorTest {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     @Test
     void birdDetection_ShouldReturnOwl_WhenMostSessionsAreOwlType() {
@@ -65,6 +69,8 @@ class BirdsClassificatorTest {
 
     // Вспомогательный метод для создания сессий
     private SleepingSession createSession(String start, String end, SleepQuality quality) {
-        return SleepingSession.fromString(start + ";" + end + ";" + quality);
+        LocalDateTime startTime = LocalDateTime.parse(start, FORMATTER);
+        LocalDateTime endTime = LocalDateTime.parse(end, FORMATTER);
+        return new SleepingSession(startTime, endTime, quality);
     }
 }

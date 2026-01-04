@@ -1,24 +1,22 @@
 package functions;
 
+import ru.yandex.practicum.sleeptracker.SleepAnalysisResult;
 import ru.yandex.practicum.sleeptracker.SleepQuality;
 import ru.yandex.practicum.sleeptracker.SleepingSession;
 
-import java.time.Duration;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-public class BadSleepSessionsCounter implements Function<List<SleepingSession>, Duration> {
-    public static Integer badSleepSessionsCounter(List<SleepingSession> sessions) {
-        Stream<SleepingSession> counter = sessions.stream()
-                .filter(session -> session.getSleepQuality().equals(SleepQuality.BAD));
-        return counter.toList().size();
+public class BadSleepSessionsCounter implements Function<List<SleepingSession>, SleepAnalysisResult> {
 
-    }
+    private static final String DESCRIPTION = "Сессий с плохим сном: ";
 
 
     @Override
-    public Duration apply(List<SleepingSession> sleepingSessions) {
-        return null;
+    public SleepAnalysisResult apply(List<SleepingSession> sessions) {
+        Stream<SleepingSession> badSleepSessionsCounter = sessions.stream()
+                .filter(session -> session.getSleepQuality().equals(SleepQuality.BAD));
+        return new SleepAnalysisResult(DESCRIPTION, badSleepSessionsCounter.toList().size());
     }
 }

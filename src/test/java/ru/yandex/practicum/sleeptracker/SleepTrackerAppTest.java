@@ -7,7 +7,6 @@ import functions.FindMinSessionByMinutes;
 import org.junit.jupiter.api.Test;
 
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -45,15 +44,18 @@ class SleepTrackerAppTest {
                 )
         );
 
-        OptionalLong result = FindMinSessionByMinutes.findMinSessionByMinutes(sessions);
-        assertEquals(45, result.getAsLong(), "Минимальная длительность должна быть 45 минут");
+        FindMinSessionByMinutes finder = new FindMinSessionByMinutes();
+        SleepAnalysisResult result = finder.apply(sessions);
+        assertEquals("45 минут", result.getResult());
     }
 
     @Test
-    void findMinSessionByMinutes_ShouldReturnEmptyOptional_WhenSessionsListIsEmpty() {
+    void findMinSessionByMinutes_ShouldHandleEmptyList() {
         List<SleepingSession> emptySessions = Collections.emptyList();
-        OptionalLong result = FindMinSessionByMinutes.findMinSessionByMinutes(emptySessions);
-        assertFalse(result.isPresent(), "Результат должен быть пустым для пустого списка");
+
+        FindMinSessionByMinutes finder = new FindMinSessionByMinutes();
+        SleepAnalysisResult result = finder.apply(emptySessions);
+        assertEquals("0 минут", result.getResult());
     }
 
     //Тесты на максимальное значение сессии
@@ -86,16 +88,17 @@ class SleepTrackerAppTest {
                 )
         );
 
-        Optional<Duration> result = FindMaxSessionByMinutes.findMaxSessionByMinutes(sessions);
-        assertEquals(Duration.ofMinutes(480), result.get(),
-                "Максимальная длительность должна быть 480 минут (8 часов)");
+        FindMaxSessionByMinutes finder = new FindMaxSessionByMinutes();
+        SleepAnalysisResult result = finder.apply(sessions);
+        assertEquals("480 минут", result.getResult());
     }
 
     @Test
     void findMaxSessionByMinutes_ShouldReturnEmptyOptional_WhenSessionsListIsEmpty() {
         List<SleepingSession> emptySessions = Collections.emptyList();
-        Optional<Duration> result = FindMaxSessionByMinutes.findMaxSessionByMinutes(emptySessions);
-        assertFalse(result.isPresent(), "Результат должен быть пустым для пустого списка");
+        FindMaxSessionByMinutes finder = new FindMaxSessionByMinutes();
+        SleepAnalysisResult result = finder.apply(emptySessions);
+        assertEquals("0 минут", result.getResult());
     }
 
     //Тесты на среднее значение сессии
@@ -124,15 +127,17 @@ class SleepTrackerAppTest {
                 )
         );
 
-        OptionalDouble result = FindAvgByMinutes.findAvgDurationSession(sessions);
-        assertEquals(480, result.getAsDouble(), "Среднее время должно быть 480 минут");
+        FindAvgByMinutes finder = new FindAvgByMinutes();
+        SleepAnalysisResult result = finder.apply(sessions);
+        assertEquals(480.0, (Double) result.getResult());
     }
 
     @Test
     void findAvgByMinutes_ShouldReturnEmptyPtional_WhenSessionsListIsEmpty() {
         List<SleepingSession> emptySessions = Collections.emptyList();
-        OptionalDouble result = FindAvgByMinutes.findAvgDurationSession(emptySessions);
-        assertFalse(result.isPresent(), "Результат должен быть пустым для пустого списка");
+        FindAvgByMinutes finder = new FindAvgByMinutes();
+        SleepAnalysisResult result = finder.apply(emptySessions);
+        assertEquals(0.0, (Double) result.getResult());
     }
 
     //Тесты на плохие сессии
@@ -160,14 +165,16 @@ class SleepTrackerAppTest {
                         SleepQuality.BAD
                 )
         );
-        Integer result = BadSleepSessionsCounter.badSleepSessionsCounter(sessions);
-        assertEquals(2, result, "Ответ должен быть 2");
+        BadSleepSessionsCounter counter = new BadSleepSessionsCounter();
+        SleepAnalysisResult result = counter.apply(sessions);
+        assertEquals(2, result.getResult());
     }
 
     @Test
     void badSleepSessionsCounter_ShouldReturnEmptyPtional_WhenSessionsListIsEmpty() {
         List<SleepingSession> emptySessions = Collections.emptyList();
-        Integer result = BadSleepSessionsCounter.badSleepSessionsCounter(emptySessions);
-        assertFalse(result != 0, "Результат должен быть пустым для пустого списка");
+        BadSleepSessionsCounter counter = new BadSleepSessionsCounter();
+        SleepAnalysisResult result = counter.apply(emptySessions);
+        assertEquals(0, result.getResult());
     }
 }

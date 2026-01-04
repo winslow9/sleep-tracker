@@ -3,11 +3,15 @@ package ru.yandex.practicum.sleeptracker;
 import functions.*;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SleeplessNinghtsTest {
+
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
 
     @Test
     void countBadSleepSessions_ShouldReturnZero_WhenEmptyList() {
@@ -54,7 +58,9 @@ class SleeplessNinghtsTest {
 
 
     // Вспомогательный метод для создания сессий
-    private static SleepingSession createSession(String start, String end, SleepQuality quality) {
-        return SleepingSession.fromString(start + ";" + end + ";" + quality);
+    private SleepingSession createSession(String start, String end, SleepQuality quality) {
+        LocalDateTime startTime = LocalDateTime.parse(start, FORMATTER);
+        LocalDateTime endTime = LocalDateTime.parse(end, FORMATTER);
+        return new SleepingSession(startTime, endTime, quality);
     }
 }
