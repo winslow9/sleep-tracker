@@ -21,7 +21,7 @@ class BirdsClassificatorTest {
                 // Совы
                 createSession("01.10.25 23:30", "02.10.25 10:00", SleepQuality.GOOD),
                 createSession("02.10.25 23:45", "03.10.25 09:30", SleepQuality.NORMAL),
-                createSession("03.10.25 00:30", "03.10.25 09:15", SleepQuality.BAD), // После 9:00
+                createSession("03.10.25 23:45", "03.10.25 09:15", SleepQuality.BAD),
                 // ЖАВОРОНОК
                 createSession("04.10.25 19:30", "05.10.25 06:45", SleepQuality.GOOD),
                 // Голубь
@@ -38,6 +38,7 @@ class BirdsClassificatorTest {
                 // Жаворонки
                 createSession("01.10.25 19:00", "02.10.25 06:30", SleepQuality.GOOD),
                 createSession("02.10.25 18:45", "03.10.25 06:00", SleepQuality.NORMAL),
+                createSession("07.10.25 18:45", "08.10.25 06:00", SleepQuality.NORMAL),
                 // СОВА
                 createSession("03.10.25 23:15", "04.10.25 09:15", SleepQuality.BAD),
                 // Голуби
